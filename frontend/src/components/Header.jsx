@@ -1,9 +1,14 @@
 import React from 'react'
+import { NavLink } from "react-router-dom";
+
+
 
 const Header = () => {
   return (
     <div>
-      this is header
+      <NavLink to="/register">Register</NavLink>
+
+
     </div>
   )
 }
