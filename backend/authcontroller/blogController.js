@@ -5,7 +5,7 @@ import fs from "fs";
 
 export const createBlog = async (req, res) => {
   try {
-    const { title, district, state, description } = req.body;
+    const { title, district, state,category, description } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "Image is required" });
@@ -16,8 +16,9 @@ export const createBlog = async (req, res) => {
       district,
       state,
       description,
+      category,
       image: req.file.filename,
-      author: "698aa4d0a2ef1ab027157932" 
+      author: req.user._id,
     });
 
     const savedBlog = await newBlog.save();

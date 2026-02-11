@@ -1,4 +1,3 @@
-// models/blogModel.js
 import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
@@ -21,6 +20,9 @@ const blogSchema = new mongoose.Schema({
   image: {
     type: String, 
     required: true,
+  },category: {
+    type: String, 
+    required: true,
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,3 +32,4 @@ const blogSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.model("Blog", blogSchema);
+

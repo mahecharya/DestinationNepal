@@ -50,16 +50,7 @@ const Header = () => {
             Home
           </NavLink>
 
-          <NavLink
-            to="/crblogs"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-              }`
-            }
-          >
-            Create Blogs
-          </NavLink>
+        
 
           <NavLink
             to="/register"

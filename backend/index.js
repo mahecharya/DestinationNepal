@@ -5,6 +5,10 @@ import blogRoutes from "./route/blogRoute.js"
 import express from "express"
 import cors from "cors"
 import path from "path";
+import cookieParser from "cookie-parser";
+
+
+
 
 
 
@@ -14,7 +18,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
-
+app.use(cookieParser());
 
 const corsOptions={
     origin:"http://localhost:5173",

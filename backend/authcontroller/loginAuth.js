@@ -4,9 +4,9 @@ import generateToken from "../utils/jwt.js";
 
 export const createLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+   const { name, age, gender, email, password, role } = req.body;
 
-    if (!email || !password) {
+    if (!name || !age || !gender || !email || !password) {
       return res.status(400).json({ message: "please fill all details" });
     }
     const existingUser = await Login.findOne({ email });
@@ -14,13 +14,19 @@ export const createLogin = async (req, res) => {
       return res.status(409).json({ message: "user already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 8);
-    const login = await Login.create({
-      ...req.body,
-      password: hashedPassword,
-    });
+    
+    const login=await Login.create({
+       name,
+      age,
+      gender,
+      email,
+      password:hashedPassword,
+      role:role==="admin"?"admin":"user",
+    })
     res.status(201).json({
-      message: "Accountv created successfully",
+      message: "Account created successfully",
       loginID: Login._id,
+      role:login.role
     });
   } catch (error) {
     console.log(error);
@@ -40,7 +46,7 @@ export const loginUser = async (req, res) => {
     if (!isMatched) {
       return res.status(400).json({ message: "password wrong" });
     }
-    const token=generateToken(existingUser._id);
+    const token=generateToken(existingUser);
 
     console.log(token)
     res.cookie("token", token,{
@@ -52,11 +58,7 @@ export const loginUser = async (req, res) => {
     })
     res.status(200).json({
       message: "Login successful",
-      user: {
-        id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email,
-      },
+      user: existingUser,
       token,
     });
   } catch (error) {

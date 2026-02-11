@@ -1,14 +1,14 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../redux/feature/Userauthenticate";
 
 const Login = () => {
-    const dispatch=useDispatch();
-    const nav=useNavigate();
+  const dispatch = useDispatch();
+  const nav = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -24,23 +24,25 @@ const Login = () => {
         .required("Password is required"),
     }),
 
-    onSubmit: async(values, { resetForm }) => {
-        try {
-            const res = await axios.post(
-        "http://localhost:5001/api/login",
-       values, { withCredentials: true }); 
-        console.log( res.data.message);
-             localStorage.setItem("token",res.data.token)
-            dispatch(setToken(res.data.user))
-             nav("/")
-             
-        
-      
-        } catch (error) {
-            console.log(error)
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await axios.post(
+          "http://localhost:5001/api/login",
+          values,
+          { withCredentials: true },
+        );
+        console.log(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        dispatch(setToken(res.data.user));
+        console.log(res.data.user.role);
+        if (res.data.user.role === "admin") {
+          nav("/admin");
+        } else {
+          nav("/");
         }
-    
-     
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -96,11 +98,10 @@ const Login = () => {
         {/* Extra */}
         <p className="text-center text-sm text-gray-600 mt-4">
           Don’t have an account?{" "}
-          <span 
-          onClick={()=>(
-            nav("/register")
-          )}
-          className="text-indigo-600 font-medium cursor-pointer hover:underline">
+          <span
+            onClick={() => nav("/register")}
+            className="text-indigo-600 font-medium cursor-pointer hover:underline"
+          >
             Register
           </span>
         </p>
