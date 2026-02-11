@@ -2,8 +2,10 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const nav =useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -43,9 +45,9 @@ const Register = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 to-purple-600">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-950 to-blue-900">
+      <div className="bg-gre p-8 rounded-2xl shadow-2xl bg-teal-100 w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-6">
           Register
         </h2>
 
@@ -144,6 +146,16 @@ const Register = () => {
           >
             Register
           </button>
+           <p className="text-center text-sm text-gray-600 mt-4">
+          Already have an account?{" "}
+          <span 
+          onClick={()=>(
+            nav("/login")
+          )}
+          className="text-indigo-600 font-medium cursor-pointer hover:underline">
+            Login
+          </span>
+        </p>
         </form>
       </div>
     </div>
