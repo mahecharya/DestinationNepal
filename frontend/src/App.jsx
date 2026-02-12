@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Likedblogs from "./pages/Likedblogs";
 import Category from "./pages/Category";
 import AdminHome from "./pages/adminHome";
+import Viewblog from "./pages/Viewblog";
+import BlogDetail from "./pages/Blogdetail";
 
 
 const App = () => {
@@ -20,13 +22,17 @@ const App = () => {
   <Route path="/" element={<Homepage />} />
   <Route path="/register" element={<Register />} />
   <Route path="/login" element={<Login />} />
+    <Route path="blogs/:id" element={<BlogDetail />} />
+
 
   
-  <Route path="/admin" element={<AdminHome />}>
-    <Route path="/admin/viewblogs" element={<Blog />} />
-    <Route path="category" element={<Category />} />
-    <Route path="liked" element={<Likedblogs />} />
-  </Route>
+ <Route path="/admin" element={<AdminHome />}>
+  <Route path="createblogs" element={<Blog />} />
+  <Route path="viewblogs" element={<Viewblog />} />
+  <Route path="category" element={<Category />} />
+  <Route path="liked" element={<Likedblogs />} />
+</Route>
+
 </Routes>
 
       <Footer />

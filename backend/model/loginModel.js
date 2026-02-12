@@ -32,6 +32,6 @@ const loginSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Login = mongoose.model("logindetais", loginSchema);
+const Login = mongoose.model("Login", loginSchema);
 
 export default Login;

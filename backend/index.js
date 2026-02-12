@@ -30,6 +30,7 @@ app.use("/api", loginRoute);
 
 app.use("/blogs", blogRoutes);
 
+app.use("/uploads", express.static("upload"));
 
 
 

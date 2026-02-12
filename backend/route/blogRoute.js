@@ -1,6 +1,6 @@
 
 import express from "express";
-import { createBlog, getBlogs } from "../authcontroller/blogController.js";
+import { createBlog, findBlog, findBlogById } from "../authcontroller/blogController.js";
 import multer from "multer";
 import path from "path";
 import { adminMiddleware, authMiddleware } from "../middleware/authMiddleware.js";
@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post("/create", upload.single("image"),authMiddleware,adminMiddleware, createBlog);
-router.get("/", getBlogs);
+router.get("/find",findBlog)
+router.get("/find/:id", findBlogById);
+
 
 export default router;
