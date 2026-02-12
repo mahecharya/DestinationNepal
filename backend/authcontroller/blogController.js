@@ -53,3 +53,53 @@ export const findBlogById = async (req, res) => {
   }
 };
 
+export const toggleLike = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const userId = req.user.id; // from auth middleware
+
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    const alreadyLiked = blog.likes.includes(userId);
+
+    if (alreadyLiked) {
+      // Unlike
+      blog.likes = blog.likes.filter(
+        (id) => id.toString() !== userId
+      );
+    } else {
+      // Like
+      blog.likes.push(userId);
+    }
+
+    await blog.save();
+
+    res.status(200).json({
+      message: alreadyLiked ? "Unliked" : "Liked",
+      totalLikes: blog.likes.length,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const getLikedBlogs = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const likedBlogs = await Blog.find({
+      likes: userId,
+    }).populate("author", "name");
+
+    res.status(200).json(likedBlogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+ 

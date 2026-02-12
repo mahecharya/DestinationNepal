@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
-const AdminHome = () => {
+const UserHome = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <div className="w-64 bg-gray-900 text-white p-6 space-y-6">
-        <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
+        <h2 className="text-2xl font-bold mb-6">User</h2>
         <NavLink
-          to="/admin"
+          to="/user"
           end
           className={({ isActive }) =>
             `block px-4 py-2 rounded-lg ${
@@ -20,7 +20,7 @@ const AdminHome = () => {
         </NavLink>
        
         <NavLink
-          to="/admin/viewblogs"
+          to="/user/viewblogs"
           className={({ isActive }) =>
             `block px-4 py-2 rounded-lg ${
               isActive ? "bg-gray-700" : "hover:bg-gray-700"
@@ -30,7 +30,7 @@ const AdminHome = () => {
           View Blogs
         </NavLink>
         <NavLink
-          to="/admin/category"
+          to="/user/category"
           className={({ isActive }) =>
             `block px-4 py-2 rounded-lg ${
               isActive ? "bg-gray-700" : "hover:bg-gray-700"
@@ -40,7 +40,7 @@ const AdminHome = () => {
           Category
         </NavLink>
         <NavLink
-          to="/admin/liked"
+          to="/user/liked"
           className={({ isActive }) =>
             `block px-4 py-2 rounded-lg ${
               isActive ? "bg-gray-700" : "hover:bg-gray-700"
@@ -52,11 +52,11 @@ const AdminHome = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p bg-gray-100">
-        <Outlet /> {/* Child routes render here */}
+      <div className="flex-1  bg-gray-100">
+        <Outlet /> 
       </div>
     </div>
   );
 };
 
-export default AdminHome;
+export default UserHome;

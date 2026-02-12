@@ -29,6 +29,10 @@ const blogSchema = new mongoose.Schema({
     ref: "Login", 
     required: true,
   },
+  likes:[{
+     type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }]
 }, { timestamps: true });
 
 export default mongoose.model("Blog", blogSchema);

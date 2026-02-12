@@ -33,7 +33,7 @@ const BlogDetail = () => {
         <img
           src={`http://localhost:5001/uploads/${blog.image}`}
           alt={blog.title}
-          className="w-full max-h-[500px] object-cover rounded-lg mb-4"
+          className="w-full max-h-60xl object-cover rounded-lg mb-4"
         />
       )}
 

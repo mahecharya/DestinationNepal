@@ -13,18 +13,20 @@ const Header = () => {
   const handleLogout = async () => {
     localStorage.removeItem("token")
     dispatch(logoutUser());
+    navigate("/login",{ replace: true });
     try {
       await axios.post(
         "http://localhost:5001/api/logout",
         {},
         { withCredentials: true }
       );
+      
 
       
       
     } catch (error) {
       console.log(error);
-    }navigate("/login");
+    }
   };
 
   return (
@@ -39,29 +41,7 @@ const Header = () => {
 
         
         <nav className="flex items-center gap-4">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-              }`
-            }
-          >
-            Home
-          </NavLink>
-
-        
-
-          <NavLink
-            to="/register"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-md font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-              }`
-            }
-          >
-            Register
-          </NavLink>
+          
 
           {isAuthenticated ? (
             <button

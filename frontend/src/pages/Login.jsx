@@ -33,12 +33,14 @@ const Login = () => {
         );
         console.log(res.data.message);
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         dispatch(setToken(res.data.user));
         console.log(res.data.user.role);
         if (res.data.user.role === "admin") {
+          
           nav("/admin");
         } else {
-          nav("/");
+          nav("/user");
         }
       } catch (error) {
         console.log(error);
