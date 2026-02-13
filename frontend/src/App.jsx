@@ -1,24 +1,23 @@
 import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // ✅ No BrowserRouter here
 import { useDispatch } from "react-redux";
-import { setToken } from "./redux/feature/Userauthenticate"; // your slice
+import { setToken } from "./redux/feature/Userauthenticate";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+
 import Register from "./pages/Register";
-import Blog from "./pages/Blog";
 import Login from "./pages/Login";
-import Likedblogs from "./pages/Likedblogs";
-import Category from "./pages/Category";
-import AdminHome from "./pages/adminHome";
-import Viewblog from "./pages/Viewblog";
-import BlogDetail from "./pages/Blogdetail";
 import Home from "./pages/Home";
-import AdminDashboard from "./pages/AdminDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
+import Viewblog from "./pages/Viewblog";
+import BlogDetail from "./pages/Blogdetail";
+import Likedblogs from "./pages/Likedblogs";
 
 const App = () => {
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,34 +27,24 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
-      <Header />
+    <>
       <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact/>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/blogs/:id" element={<BlogDetail />} />
-         <Route path="/viewblogs" element={<Viewblog />} />
-                   <Route path="/liked" element={<Likedblogs />} />
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
 
-        {/*         
-       
-        <Route path="" element={<UserDashboard />} />
-          <Route path="category" element={<Category />} />
-          <Route path="liked" element={<Likedblogs />} /> */}
-        <Route path="/admin" element={<AdminHome />}>
+          <Route path="blogs/:id" element={<BlogDetail />} />
           <Route path="viewblogs" element={<Viewblog />} />
-          <Route path="createblogs" element={<Blog />} />
-          <Route path="" element={<AdminDashboard />} />
-          <Route path="category" element={<Category />} />
           <Route path="liked" element={<Likedblogs />} />
+          <Route path="createblogs" element={<Blog />} />
         </Route>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
-    </div>
+    </>
   );
 };
 

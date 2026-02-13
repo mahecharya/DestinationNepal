@@ -38,7 +38,7 @@ const Login = () => {
         console.log(res.data.user.role);
         if (res.data.user.role === "admin") {
           
-          nav("/admin");
+          nav("/");
         } else {
           nav("/");
         }

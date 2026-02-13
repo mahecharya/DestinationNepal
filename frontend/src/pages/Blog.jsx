@@ -46,7 +46,7 @@ const Blog = () => {
           formData,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // ✅ FIX 401 ERROR
+              Authorization: `Bearer ${token}`, 
             },
           }
         );

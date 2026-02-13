@@ -1,118 +1,89 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/feature/Userauthenticate";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.authenticate.token);
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const isAuthenticated = useSelector((state)=>state.authenticate.token)
-
-  const handleLogout = async () => {
-  try {
-    await axios.post("http://localhost:5001/api/logout");
-
-    // Clear browser storage
+  const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
-    // Clear Redux state
     dispatch(logoutUser());
-
-    // Redirect
     navigate("/", { replace: true });
-
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
   return (
-     <div className=" mx-auto bg-slate-300 flex justify-between items-center p-4">
-        
-        <div
-          className="text-2xl font-bold text-indigo-600 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          MyBlogApp
+    <div className="flex min-h-screen">
+      {/* Permanent Sidebar for Admin */}
+      {user?.role === "admin" && (
+        <div className="w-64 bg-gray-700 text-white shrink-0">
+          <h2 className="text-2xl font-bold p-6">Admin Panel</h2>
+          <NavLink to="/" className="block py-2 px-6 hover:text-blue-300">
+            Dashboard
+          </NavLink>
+          <NavLink to="/createblogs" className="block py-2 px-6 hover:text-blue-300">
+            Add Blogs
+          </NavLink>
+          
+          <NavLink to="/liked" className="block py-2 px-6 hover:text-blue-300">
+            Liked Blogs
+          </NavLink>
         </div>
+      )}
 
-        
-        <nav className="flex items-center gap-4">
-          <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-slate-300 flex justify-between items-center p-4">
+          <div
+            className="text-2xl font-bold text-indigo-600 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            MyBlogApp
+          </div>
+
+          <nav className="flex items-center gap-4">
+            <NavLink to="/" className="px-4 py-2 rounded-md">
               Home
             </NavLink>
-            <NavLink
-              to="/viewblogs"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
+            <NavLink to="/viewblogs" className="px-4 py-2 rounded-md">
               Blog
             </NavLink>
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
-About            </NavLink>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
-              Contact Us
-            </NavLink>
-            <NavLink
-              to="/liked"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
+            <NavLink to="/liked" className="px-4 py-2 rounded-md">
               Liked Blogs
             </NavLink>
-
-          {isAuthenticated ? (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium"
-            >
-              Logout
-            </button>
-          ) : (
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-md font-medium transition ${
-                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
-                }`
-              }
-            >
-              Login
+            <NavLink to="/about" className="px-4 py-2 rounded-md">
+              About Us
             </NavLink>
-            
-          )}
-        </nav>
+            <NavLink to="/contact" className="px-4 py-2 rounded-md">
+              Contact Us
+            </NavLink>
+
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-600 text-white rounded-md"
+              >
+                Logout
+              </button>
+            ) : (
+              <NavLink to="/login" className="px-4 py-2 rounded-md">
+                Login
+              </NavLink>
+            )}
+          </nav>
+        </div>
+
+        {/* Render page content without extra gap */}
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </div>
+    </div>
   );
 };
 
