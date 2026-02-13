@@ -1,11 +1,12 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
+
 const AdminHome = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-64 bg-gray-900 text-white p-6 space-y-6">
+      <div className="w-64 bg-gray-600 text-white p-6 space-y-6">
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
         <NavLink
           to="/admin"
@@ -53,7 +54,8 @@ const AdminHome = () => {
 
       {/* Main content */}
       <div className="flex-1 p bg-gray-100">
-        <Outlet /> {/* Child routes render here */}
+        <Outlet /> 
+       
       </div>
     </div>
   );

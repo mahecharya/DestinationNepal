@@ -59,6 +59,7 @@ export const toggleLike = async (req, res) => {
     const userId = req.user.id; // from auth middleware
 
     const blog = await Blog.findById(blogId);
+    
 
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });

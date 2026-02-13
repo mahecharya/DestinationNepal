@@ -13,6 +13,9 @@ import AdminHome from "./pages/adminHome";
 import Viewblog from "./pages/Viewblog";
 import BlogDetail from "./pages/Blogdetail";
 import UserHome from "./pages/UserHome";
+import Home from "./pages/Home";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserDashboard from "./pages/UserDashboard";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,19 +33,23 @@ const App = () => {
       <Header />
       <Routes>
         {/* Public routes */}
-        
+         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="blogs/:id" element={<BlogDetail />} />
         
         <Route path="/user" element={< UserHome/>} >
         <Route path="viewblogs" element={<Viewblog />} />
+        <Route path="" element={<UserDashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="liked" element={<Likedblogs />} />
         </Route>
         {/* Admin routes */}
         <Route path="/admin" element={<AdminHome />}>
           <Route path="viewblogs" element={<Viewblog />} />
+          <Route path="createblogs" element={<Blog />} />
+                    <Route path="" element={<AdminDashboard />} />
+
           <Route path="category" element={<Category />} />
           <Route path="liked" element={<Likedblogs />} />
         </Route>

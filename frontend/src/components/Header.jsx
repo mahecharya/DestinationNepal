@@ -11,23 +11,23 @@ const Header = () => {
   const isAuthenticated = useSelector((state)=>state.authenticate.token)
 
   const handleLogout = async () => {
-    localStorage.removeItem("token")
-    dispatch(logoutUser());
-    navigate("/login",{ replace: true });
-    try {
-      await axios.post(
-        "http://localhost:5001/api/logout",
-        {},
-        { withCredentials: true }
-      );
-      
+  try {
+    await axios.post("http://localhost:5001/api/logout");
 
-      
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    // Clear browser storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Clear Redux state
+    dispatch(logoutUser());
+
+    // Redirect
+    navigate("/", { replace: true });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
      <div className=" mx-auto bg-slate-300 flex justify-between items-center p-4">

@@ -5,7 +5,7 @@ const UserHome = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-64 bg-gray-900 text-white p-6 space-y-6">
+      <div className="w-64 bg-slate-900 text-white p-6 space-y-6">
         <h2 className="text-2xl font-bold mb-6">User</h2>
         <NavLink
           to="/user"
