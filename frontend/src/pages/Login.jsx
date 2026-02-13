@@ -40,7 +40,7 @@ const Login = () => {
           
           nav("/admin");
         } else {
-          nav("/user");
+          nav("/");
         }
       } catch (error) {
         console.log(error);

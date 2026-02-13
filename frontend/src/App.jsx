@@ -12,16 +12,15 @@ import Category from "./pages/Category";
 import AdminHome from "./pages/adminHome";
 import Viewblog from "./pages/Viewblog";
 import BlogDetail from "./pages/Blogdetail";
-import UserHome from "./pages/UserHome";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
-import UserDashboard from "./pages/UserDashboard";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check localStorage on app load
     const token = localStorage.getItem("token");
     if (token) {
       dispatch(setToken(token));
@@ -33,23 +32,24 @@ const App = () => {
       <Header />
       <Routes>
         {/* Public routes */}
-         <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact/>} />
         <Route path="/login" element={<Login />} />
-        <Route path="blogs/:id" element={<BlogDetail />} />
-        
-        <Route path="/user" element={< UserHome/>} >
-        <Route path="viewblogs" element={<Viewblog />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
+         <Route path="/viewblogs" element={<Viewblog />} />
+                   <Route path="/liked" element={<Likedblogs />} />
+
+        {/*         
+       
         <Route path="" element={<UserDashboard />} />
           <Route path="category" element={<Category />} />
-          <Route path="liked" element={<Likedblogs />} />
-        </Route>
-        {/* Admin routes */}
+          <Route path="liked" element={<Likedblogs />} /> */}
         <Route path="/admin" element={<AdminHome />}>
           <Route path="viewblogs" element={<Viewblog />} />
           <Route path="createblogs" element={<Blog />} />
-                    <Route path="" element={<AdminDashboard />} />
-
+          <Route path="" element={<AdminDashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="liked" element={<Likedblogs />} />
         </Route>

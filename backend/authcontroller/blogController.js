@@ -35,7 +35,13 @@ export const createBlog = async (req, res) => {
 
 export const findBlog = async (req, res) => {
   try {
-    const blogs = await Blog.find()
+      const {category}=req.query;
+      let filter={};
+      if(category){
+        filter.category=category;
+      }
+
+    const blogs = await Blog.find(filter)
       .populate("author", "name email")
       .sort({ createdAt: -1 });
     res.status(200).json(blogs); // ✅ return array directly
@@ -48,6 +54,14 @@ export const findBlogById = async (req, res) => {
     const blog = await Blog.findById(req.params.id).populate("author", "name email");
     if (!blog) return res.status(404).json({ message: "Blog not found" });
     res.status(200).json(blog);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Blog.distinct("category"); // MongoDB distinct
+    res.status(200).json(categories); // returns array: ["Travel", "Food", ...]
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

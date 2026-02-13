@@ -41,7 +41,55 @@ const Header = () => {
 
         
         <nav className="flex items-center gap-4">
-          
+          <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md font-medium transition ${
+                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/viewblogs"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md font-medium transition ${
+                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                }`
+              }
+            >
+              Blog
+            </NavLink>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md font-medium transition ${
+                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                }`
+              }
+            >
+About            </NavLink>
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md font-medium transition ${
+                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                }`
+              }
+            >
+              Contact Us
+            </NavLink>
+            <NavLink
+              to="/liked"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-md font-medium transition ${
+                  isActive ? "bg-indigo-600 text-white" : "text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                }`
+              }
+            >
+              Liked Blogs
+            </NavLink>
 
           {isAuthenticated ? (
             <button
@@ -61,6 +109,7 @@ const Header = () => {
             >
               Login
             </NavLink>
+            
           )}
         </nav>
       </div>

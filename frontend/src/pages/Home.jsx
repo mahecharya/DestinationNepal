@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import nepal from "../assets/Nepal.png"
+import nepal from "../assets/Nepal.png";
 import { SlLike } from "react-icons/sl";
 import { AiFillLike } from "react-icons/ai";
+import img from "../assets/img.jpg";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+    fetchCategories();
+  }, [category]);
 
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/blogs/find");
+      setLoading(true);
+      const url = category
+        ? `http://localhost:5001/blogs/find?category=${category}`
+        : "http://localhost:5001/blogs/find";
+      const res = await axios.get(url);
       setBlogs(res.data);
     } catch (error) {
       console.log(error);
@@ -26,27 +35,30 @@ const Home = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:5001/blogs/categories");
+      setCategories(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleLike = async (e, blogId) => {
     e.preventDefault();
-
     if (!user) {
       alert("Please login first to like this blog");
       return;
     }
-
     try {
       const token = localStorage.getItem("token");
-
       await axios.put(
         `http://localhost:5001/blogs/${blogId}/like`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
-
       fetchBlogs();
     } catch (error) {
       console.log(error);
@@ -62,60 +74,75 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
+      {/* Hero Section */}
+      <div
+        className="relative h-[70vh] bg-cover bg-center"
+        style={{ backgroundImage: `url(${nepal})` }}
+      >
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            Discover the Beauty of Nepal
+          </h1>
+          <p className="text-lg md:text-xl max-w-2xl">
+            From the majestic Everest and Machapuchare to ancient temples and
+            lush green valleys. Explore Nepal through travel stories.
+          </p>
+        </div>
+      </div>
 
-      {/* 🔥 HERO SECTION */}
-     <div
-  className="relative h-[70vh] bg-cover bg-center"
-  style={{
-    backgroundImage: `url(${nepal})`,
-  }}
->
-  {/* Dark Overlay */}
-  <div className="absolute inset-0  bg-opacity-50"></div>
+      {/* Category Buttons */}
+      <div className="flex justify-center flex-wrap gap-4 mt-10 mb-8 px-4">
+        <button
+          className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
+            category === ""
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-700 hover:bg-blue-100"
+          }`}
+          onClick={() => setCategory("")}
+        >
+          All Categories
+        </button>
+        {categories.map((cat, index) => (
+          <button
+            key={index}
+            className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
+              category === cat
+                ? "bg-blue-500 text-white"
+                : "bg-white text-gray-700 hover:bg-blue-100"
+            }`}
+            onClick={() => setCategory(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
-  {/* Text Content */}
-  <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
-    <h1 className="text-4xl md:text-6xl font-bold mb-4">
-      Discover the Beauty of Nepal
-    </h1>
-    <p className="text-lg md:text-xl max-w-2xl">
-      From the majestic Everest and Machapuchare to ancient temples and
-      lush green valleys. explore Nepal through travel stories.
-    </p>
-  </div>
-</div>
-
-      {/* 🔥 BLOG SECTION */}
-      <div className="p-8">
-        <h2 className="text-3xl font-bold text-center mb-10">
-          Latest Travel Blogs
-        </h2>
+      {/* Blog Cards */}
+      <div className="p-8 max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-10">Featured Blogs</h2>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
-          {blogs.map((blog) => {
+          {/* Render first 5 blogs */}
+          {blogs.slice(0, 5).map((blog) => {
             const isLiked = blog.likes?.includes(user?._id);
 
             return (
               <NavLink key={blog._id} to={`/blogs/${blog._id}`}>
-                <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden">
-                  
-                  {/* Blog Image */}
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
                   <img
                     src={`http://localhost:5001/uploads/${blog.image}`}
                     alt={blog.title}
                     className="w-full h-56 object-cover"
                   />
 
-                  {/* Content */}
                   <div className="p-5">
                     <span className="text-sm font-semibold text-green-600">
                       {blog.category}
                     </span>
 
-                    <h2 className="text-xl font-bold mt-2">
-                      {blog.title}
-                    </h2>
+                    <h2 className="text-xl font-bold mt-2">{blog.title}</h2>
 
                     <p className="text-sm text-gray-600 mt-1">
                       {blog.district}, {blog.state}
@@ -129,7 +156,7 @@ const Home = () => {
                       By {blog.author?.name || "Unknown"}
                     </p>
 
-                    {/* Like */}
+                    {/* Like Button */}
                     <div className="flex items-center justify-between mt-5">
                       <button
                         onClick={(e) => handleLike(e, blog._id)}
@@ -148,6 +175,27 @@ const Home = () => {
               </NavLink>
             );
           })}
+
+          {/* View More Card */}
+          {blogs.length > 5 && (
+            <NavLink to="/viewblogs">
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
+                {/* Image same as blog card */}
+                <img
+                  src={img}
+                  alt="View All Blogs"
+                  className="w-full h-56 opacity-50 object-cover"
+                />
+
+                <div className="p-5 flex items-center justify-center">
+                  <h2 className="text-xl font-bold flex text-center">
+                    <FaArrowRightLong  className="pt-1 "/>
+                    <span> View All Blogs</span>
+                  </h2>
+                </div>
+              </div>
+            </NavLink>
+          )}
         </div>
       </div>
     </div>

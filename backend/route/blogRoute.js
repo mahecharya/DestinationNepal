@@ -1,6 +1,6 @@
 
 import express from "express";
-import { createBlog, findBlog, findBlogById, getLikedBlogs, toggleLike } from "../authcontroller/blogController.js";
+import { createBlog, findBlog, findBlogById, getCategories, getLikedBlogs, toggleLike } from "../authcontroller/blogController.js";
 import multer from "multer";
 import path from "path";
 import { adminMiddleware, authMiddleware } from "../middleware/authMiddleware.js";
@@ -23,6 +23,7 @@ router.get("/find",findBlog)
 router.get("/find/:id", findBlogById);
 router.put("/:id/like", authMiddleware, toggleLike);
 router.get("/liked", authMiddleware, getLikedBlogs);
+router.get("/categories", getCategories);
 
 
 

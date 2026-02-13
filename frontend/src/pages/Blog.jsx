@@ -33,7 +33,7 @@ const Blog = () => {
       formData.append("image", values.image);
 
       try {
-        // ✅ Get token from localStorage
+        
         const token = localStorage.getItem("token");
 
         if (!token) {
