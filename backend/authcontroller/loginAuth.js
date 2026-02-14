@@ -74,3 +74,15 @@ export const logoutUser = async (req, res) => {
     console.log(error);
   }
 };
+export const getUserCount = async (req, res) => {
+  try {
+    const totalusers = await Login.countDocuments();
+
+    res.status(200).json({
+      totalusers
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

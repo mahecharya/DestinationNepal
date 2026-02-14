@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom"; // ✅ No BrowserRouter here
+import { Routes, Route } from "react-router-dom"; 
 import { useDispatch } from "react-redux";
 import { setToken } from "./redux/feature/Userauthenticate";
 import Header from "./components/Header";
@@ -14,10 +14,10 @@ import Blog from "./pages/Blog";
 import Viewblog from "./pages/Viewblog";
 import BlogDetail from "./pages/Blogdetail";
 import Likedblogs from "./pages/Likedblogs";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,12 +32,15 @@ const App = () => {
         <Route path="/" element={<Header />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="contact" element={<Contact />} />
 
           <Route path="blogs/:id" element={<BlogDetail />} />
           <Route path="viewblogs" element={<Viewblog />} />
           <Route path="liked" element={<Likedblogs />} />
           <Route path="createblogs" element={<Blog />} />
+                    <Route path="createblogs/:id" element={<Blog />} />
+
         </Route>
 
         <Route path="/login" element={<Login />} />

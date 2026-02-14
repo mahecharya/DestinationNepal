@@ -22,11 +22,11 @@ const Header = () => {
       {user?.role === "admin" && (
         <div className="w-64 bg-gray-700 text-white shrink-0">
           <h2 className="text-2xl font-bold p-6">Admin Panel</h2>
-          <NavLink to="/" className="block py-2 px-6 hover:text-blue-300">
+          <NavLink to="/dashboard" className="block py-2 px-6 hover:text-blue-300">
             Dashboard
           </NavLink>
-          <NavLink to="/createblogs" className="block py-2 px-6 hover:text-blue-300">
-            Add Blogs
+          <NavLink to="/viewblogs" className="block py-2 px-6 hover:text-blue-300">
+            Manage Blogs
           </NavLink>
           
           <NavLink to="/liked" className="block py-2 px-6 hover:text-blue-300">
