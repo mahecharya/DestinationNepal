@@ -21,7 +21,10 @@ const upload = multer({ storage });
 router.post("/create", upload.single("image"),authMiddleware,adminMiddleware, createBlog);
 router.get("/find",findBlog)
 router.delete("/delete/:id", authMiddleware, deleteBlog);
-router.put("/update/:id", authMiddleware, updateBlog);
+router.put("/update/:id",authMiddleware,
+  upload.single("image"),   // 👈 ADD THIS
+  updateBlog
+);
 
 
 router.get("/find/:id", findBlogById);

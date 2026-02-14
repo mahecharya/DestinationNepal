@@ -91,7 +91,7 @@ const Viewblog = () => {
       {user?.role === "admin" && (
         <div className="flex justify-center mb-8">
           <NavLink
-            to="/admin/createblogs"
+            to="/createblogs"
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600"
           >
             <GrAdd /> ADD NEW BLOGS

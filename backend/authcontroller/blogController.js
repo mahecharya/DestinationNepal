@@ -152,26 +152,34 @@ export const deleteBlog = async (req, res) => {
 
 export const updateBlog = async (req, res) => {
   try {
-    const { id } = req.params; // get blog ID from URL
-    const updatedData = req.body; // get updated fields from frontend
+    const { id } = req.params;
 
-    if (!updatedData || Object.keys(updatedData).length === 0) {
-      return res.status(400).json({ message: "No data provided to update" });
+    const updatedData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updatedData.image = req.file.filename;
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
       updatedData,
-      { returnDocument: 'after' } // IMPORTANT: replaces deprecated { new: true }
+      { new: true }
     );
 
     if (!updatedBlog) {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    res.status(200).json({ message: "Blog updated successfully", updatedBlog });
+    res.status(200).json({
+      message: "Blog updated successfully",
+      updatedBlog,
+    });
+
   } catch (error) {
     console.error("Update error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
