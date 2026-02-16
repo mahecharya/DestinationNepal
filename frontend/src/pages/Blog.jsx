@@ -66,21 +66,18 @@ const fetchData = async () => {
 
     const formData = new FormData();
 
-    // Text fields
     formData.append("title", values.title);
     formData.append("district", values.district);
     formData.append("state", values.state);
     formData.append("description", values.description);
     formData.append("category", values.category);
 
-    // Image (only if selected)
     if (values.image) {
       formData.append("image", values.image);
     }
 
     let response;
 
-    // 🔹 UPDATE MODE
     if (isEditmode) {
       response = await axios.put(
         `http://localhost:5001/blogs/update/${id}`,
@@ -95,7 +92,6 @@ const fetchData = async () => {
       alert("Blog updated successfully!");
     }
 
-    // 🔹 CREATE MODE
     else {
       response = await axios.post(
         "http://localhost:5001/blogs/create",

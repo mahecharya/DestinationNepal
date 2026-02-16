@@ -119,7 +119,6 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Blog Cards */}
       <div className="p-8 max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-10">Featured Blogs</h2>
 
@@ -156,7 +155,6 @@ const Home = () => {
                       By {blog.author?.name || "Unknown"}
                     </p>
 
-                    {/* Like Button */}
                     <div className="flex items-center justify-between mt-5">
                       <button
                         onClick={(e) => handleLike(e, blog._id)}

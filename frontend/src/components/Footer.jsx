@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-white mt-12">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-slate-900 text-white ">
+      <div className="max-w-6xl mx-auto px-4  grid grid-cols-1 p-4 md:grid-cols-3 gap-8">
         
         {/* About Section */}
         <div>
@@ -42,7 +42,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-gray-800 mt-6 py-4 text-center text-gray-500 text-sm">
+      <div className="border-t border-gray-800 mt-6  text-center text-gray-500 text-sm">
         &copy; {new Date().getFullYear()} Nepal Blog. All rights reserved.
       </div>
     </footer>

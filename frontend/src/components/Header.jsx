@@ -6,7 +6,7 @@ import { logoutUser } from "../redux/feature/Userauthenticate";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.authenticate.token);
+  const token = useSelector((state) => state.authenticate.token);
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
@@ -18,119 +18,93 @@ const Header = () => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Permanent Sidebar for Admin */}
+      {/* Sidebar */}
       {user?.role === "admin" && (
         <div className="w-64 bg-gray-700 text-white shrink-0">
           <h2 className="text-2xl font-bold p-6">Admin Panel</h2>
-          <NavLink
-            to="/dashboard"
-            className="block py-2 px-6 hover:text-blue-300"
-          >
-            Dashboard
-          </NavLink>
-          <NavLink
-            to="/viewblogs"
-            className="block py-2 px-6 hover:text-blue-300"
-          >
-            Manage Blogs
-          </NavLink>
-
-          <NavLink to="/liked" className="block py-2 px-6 hover:text-blue-300">
-            Liked Blogs
-          </NavLink>
+          <NavLink to="/dashboard" className="block py-2 px-6 hover:text-blue-300">Dashboard</NavLink>
+          <NavLink to="/viewblogs" className="block py-2 px-6 hover:text-blue-300">Manage Blogs</NavLink>
+          <NavLink to="/viewuser" className="block py-2 px-6 hover:text-blue-300">Manage Users</NavLink>
         </div>
       )}
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="bg-slate-300 flex justify-between items-center px-10 h-20 shadow-md">
-        <div
-  onClick={() => navigate("/")}
-  className="cursor-pointer flex  leading-tight"
->
-  <span className="text-2xl font-semibold tracking-wide 
-    bg-linear-to-r from-indigo-600 via-blue-500 to-emerald-500 
-    bg-clip-text text-transparent">
-    Explore
-  </span>
 
-  <span className="text-2xl font-extrabold tracking-widest
-     text-green-700">
-    NEPAL
-  </span>
-</div>
-          {/* Navigation */}
-          <nav className="flex items-center gap-8 text-1rem font-medium">
-            <NavLink
-  to="/"
-  className={({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-bold underline"
-      : "text-gray-800 hover:text-blue-500"
-  }
->
-  Home
-</NavLink>
+        {/* HEADER */}
+        <div className="bg-slate-300 flex items-center justify-between px-10 h-20 shadow-md">
 
-<NavLink
-  to="/viewblogs"
-  className={({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-bold underline"
-      : "text-gray-800 hover:text-blue-500"
-  }
->
-  Blog
-</NavLink>
+          {/* Left Logo */}
+          <div
+            onClick={() => navigate("/")}
+            className="cursor-pointer flex"
+          >
+            <span className="text-2xl font-semibold bg-gradient-to-r from-indigo-600 via-blue-500 to-emerald-500 bg-clip-text text-transparent">
+              Explore
+            </span>
+            <span className="text-2xl font-bold text-green-700 ml-1">
+              NEPAL
+            </span>
+          </div>
 
-<NavLink
-  to="/liked"
-  className={({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-bold underline"
-      : "text-gray-800 hover:text-blue-500"
-  }
->
-  Liked Blogs
-</NavLink>
+          {/* CENTER MENU */}
+          <nav className="flex gap-10 font-medium">
+            <NavLink to="/" className={({isActive}) =>
+              isActive ? "text-blue-600 font-bold underline" : "hover:text-blue-600"
+            }>Home</NavLink>
 
-<NavLink
-  to="/about"
-  className={({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-bold underline"
-      : "text-gray-800 hover:text-blue-500"
-  }
->
-  About Us
-</NavLink>
+            <NavLink to="/viewblogs" className={({isActive}) =>
+              isActive ? "text-blue-600 font-bold underline" : "hover:text-blue-600"
+            }>Blog</NavLink>
 
-<NavLink
-  to="/contact"
-  className={({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-bold underline"
-      : "text-gray-800 hover:text-blue-500"
-  }
->
-  Contact Us
-</NavLink>
+            <NavLink to="/liked" className={({isActive}) =>
+              isActive ? "text-blue-600 font-bold underline" : "hover:text-blue-600"
+            }>Liked</NavLink>
 
-            {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-1 bg-red-600 text-white rounded-md"
-              >
-                Logout
-              </button>
+            <NavLink to="/about" className={({isActive}) =>
+              isActive ? "text-blue-600 font-bold underline" : "hover:text-blue-600"
+            }>About</NavLink>
+
+            <NavLink to="/contact" className={({isActive}) =>
+              isActive ? "text-blue-600 font-bold underline" : "hover:text-blue-600"
+            }>Contact</NavLink>
+          </nav>
+
+          {/* RIGHT PROFILE SECTION */}
+          <div className="flex items-center gap-4">
+            {token ? (
+              <>
+                {/* Profile */}
+                <div
+                  onClick={() => navigate("/profile")}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <img
+                    src={
+                      user?.profilePhoto
+                        ? `http://localhost:5001/uploads/profile/${user.profilePhoto}`
+                        : "https://via.placeholder.com/40"
+                    }
+                    alt="profile"
+                    className="w-10 h-10 rounded-full object-cover border"
+                  />
+                  <span className="font-medium">{user?.name}</span>
+                </div>
+
+                {/* Logout */}
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-1 bg-red-600 text-white rounded-md"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <NavLink to="/login">Login</NavLink>
             )}
-          </nav>
+          </div>
         </div>
 
-        {/* Render page content without extra gap */}
         <div className="flex-1">
           <Outlet />
         </div>

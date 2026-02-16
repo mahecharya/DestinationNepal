@@ -86,3 +86,30 @@ export const getUserCount = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const updateData = {
+      name: req.body.name,
+      email: req.body.email
+    };
+
+    if (req.file) {
+      updateData.profilePhoto = req.file.filename;
+    }
+
+    const user = await Login.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true }
+    );
+
+    res.status(200).json(user);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Profile update failed" });
+  }
+};
+
