@@ -24,7 +24,7 @@ const Header = () => {
           <h2 className="text-2xl font-bold p-6">Admin Panel</h2>
           <NavLink to="/dashboard" className="block py-2 px-6 hover:text-blue-300">Dashboard</NavLink>
           <NavLink to="/viewblogs" className="block py-2 px-6 hover:text-blue-300">Manage Blogs</NavLink>
-          <NavLink to="/viewuser" className="block py-2 px-6 hover:text-blue-300">Manage Users</NavLink>
+          <NavLink to="/users" className="block py-2 px-6 hover:text-blue-300">Manage Users</NavLink>
         </div>
       )}
 

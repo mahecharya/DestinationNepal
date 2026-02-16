@@ -113,3 +113,11 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+export const findUsers = async (req, res) => {
+  try {
+    const users = await Login.find(); // fetch all users without sorting
+    res.status(200).json(users);     // return array directly
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

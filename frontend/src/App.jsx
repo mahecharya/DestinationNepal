@@ -16,6 +16,7 @@ import BlogDetail from "./pages/Blogdetail";
 import Likedblogs from "./pages/Likedblogs";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import ManageUser from "./pages/ManageUser";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,9 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={<ManageUser />} />
           <Route path="profile" element={<Profile />} />
+
           <Route path="contact" element={<Contact />} />
 
           <Route path="blogs/:id" element={<BlogDetail />} />

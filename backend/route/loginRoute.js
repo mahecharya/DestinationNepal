@@ -3,6 +3,7 @@ import path from "path";
 import multer from "multer";
 import {
   createLogin,
+  findUsers,
   getUserCount,
   loginUser,
   logoutUser,
@@ -26,6 +27,7 @@ const upload = multer({ storage });
 
 // ✅ Routes
 router.post("/create", createLogin);
+router.get("/find", findUsers);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.get("/ucount", getUserCount);

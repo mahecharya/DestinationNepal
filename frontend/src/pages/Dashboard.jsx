@@ -93,7 +93,7 @@ const [ucount,setUcount]=useState(0);
         <div className="bg-white shadow-md rounded-2xl p-6 text-center">
           <h3 className="text-xl font-semibold mb-4">Manage Users</h3>
           <button
-            onClick={() => navigate("/admin/users")}
+            onClick={() => navigate("/users")}
             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
           >
             Go to Users
@@ -104,7 +104,7 @@ const [ucount,setUcount]=useState(0);
         <div className="bg-white shadow-md rounded-2xl p-6 text-center">
           <h3 className="text-xl font-semibold mb-4">Manage Profile</h3>
           <button
-            onClick={() => navigate("/admin/profile")}
+            onClick={() => navigate("/profile")}
             className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition"
           >
             Edit Profile
