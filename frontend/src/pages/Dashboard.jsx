@@ -67,7 +67,6 @@ const [ucount,setUcount]=useState(0);
           </p>
         </div>
 
-        {/* Total Users */}
         <div className="bg-white shadow-md rounded-2xl p-6">
           <h2 className="text-lg text-gray-600">Total Users</h2>
           <p className="text-4xl font-bold text-green-600 mt-2">
@@ -76,7 +75,6 @@ const [ucount,setUcount]=useState(0);
         </div>
       </div>
 
-      {/* Management Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Manage Blogs */}
         <div className="bg-white shadow-md rounded-2xl p-6 text-center">
@@ -89,7 +87,6 @@ const [ucount,setUcount]=useState(0);
           </button>
         </div>
 
-        {/* Manage Users */}
         <div className="bg-white shadow-md rounded-2xl p-6 text-center">
           <h3 className="text-xl font-semibold mb-4">Manage Users</h3>
           <button
@@ -100,7 +97,6 @@ const [ucount,setUcount]=useState(0);
           </button>
         </div>
 
-        {/* Manage Profile */}
         <div className="bg-white shadow-md rounded-2xl p-6 text-center">
           <h3 className="text-xl font-semibold mb-4">Manage Profile</h3>
           <button

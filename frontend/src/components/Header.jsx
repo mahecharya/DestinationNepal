@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/feature/Userauthenticate";
+import { LuLogOut } from "react-icons/lu";
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const Header = () => {
           <h2 className="text-2xl font-bold p-6">Admin Panel</h2>
           <NavLink to="/dashboard" className="block py-2 px-6 hover:text-blue-300">Dashboard</NavLink>
           <NavLink to="/viewblogs" className="block py-2 px-6 hover:text-blue-300">Manage Blogs</NavLink>
+          <NavLink to="/category" className="block py-2 px-6 hover:text-blue-300">Manage Category</NavLink>
           <NavLink to="/users" className="block py-2 px-6 hover:text-blue-300">Manage Users</NavLink>
         </div>
       )}
@@ -94,9 +97,9 @@ const Header = () => {
                 {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-1 bg-red-600 text-white rounded-md"
                 >
-                  Logout
+                  <LuLogOut />
+
                 </button>
               </>
             ) : (

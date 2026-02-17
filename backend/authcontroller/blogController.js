@@ -58,8 +58,7 @@ export const findBlog = async (req, res) => {
       }
 
     const blogs = await Blog.find(filter)
-      .populate("author", "name email")
-      .sort({ createdAt: -1 });
+      .populate("author", "name email");
     res.status(200).json(blogs); // ✅ return array directly
   } catch (error) {
     res.status(500).json({ message: error.message });

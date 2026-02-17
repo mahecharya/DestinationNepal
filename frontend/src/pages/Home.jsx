@@ -17,15 +17,20 @@ const Home = () => {
 
   useEffect(() => {
     fetchBlogs();
-    fetchCategories();
   }, [category]);
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // ✅ Fetch Blogs
   const fetchBlogs = async () => {
     try {
       setLoading(true);
       const url = category
         ? `http://localhost:5001/blogs/find?category=${category}`
         : "http://localhost:5001/blogs/find";
+
       const res = await axios.get(url);
       setBlogs(res.data);
     } catch (error) {
@@ -35,9 +40,14 @@ const Home = () => {
     }
   };
 
+  // ✅ Fetch Categories from NEW URL
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/blogs/categories");
+      const res = await axios.get(
+        "http://localhost:5001/categories/all"
+      );
+
+      // If backend returns array of objects like [{_id, name}]
       setCategories(res.data);
     } catch (error) {
       console.log(error);
@@ -46,19 +56,23 @@ const Home = () => {
 
   const handleLike = async (e, blogId) => {
     e.preventDefault();
+
     if (!user) {
       alert("Please login first to like this blog");
       return;
     }
+
     try {
       const token = localStorage.getItem("token");
+
       await axios.put(
         `http://localhost:5001/blogs/${blogId}/like`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
+
       fetchBlogs();
     } catch (error) {
       console.log(error);
@@ -92,7 +106,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Category Buttons */}
+      {/* ✅ Category Buttons */}
       <div className="flex justify-center flex-wrap gap-4 mt-10 mb-8 px-4">
         <button
           className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
@@ -104,26 +118,28 @@ const Home = () => {
         >
           All Categories
         </button>
-        {categories.map((cat, index) => (
+
+        {categories.map((cat) => (
           <button
-            key={index}
+            key={cat._id}
             className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
-              category === cat
+              category === cat.name
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 hover:bg-blue-100"
             }`}
-            onClick={() => setCategory(cat)}
+            onClick={() => setCategory(cat.name)}
           >
-            {cat}
+            {cat.name}
           </button>
         ))}
       </div>
 
       <div className="p-8 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-10">Featured Blogs</h2>
+        <h2 className="text-3xl font-bold text-center mb-10">
+          Featured Blogs
+        </h2>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
-          {/* Render first 5 blogs */}
           {blogs.slice(0, 5).map((blog) => {
             const isLiked = blog.likes?.includes(user?._id);
 
@@ -141,7 +157,9 @@ const Home = () => {
                       {blog.category}
                     </span>
 
-                    <h2 className="text-xl font-bold mt-2">{blog.title}</h2>
+                    <h2 className="text-xl font-bold mt-2">
+                      {blog.title}
+                    </h2>
 
                     <p className="text-sm text-gray-600 mt-1">
                       {blog.district}, {blog.state}
@@ -178,7 +196,6 @@ const Home = () => {
           {blogs.length > 5 && (
             <NavLink to="/viewblogs">
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
-                {/* Image same as blog card */}
                 <img
                   src={img}
                   alt="View All Blogs"
@@ -187,7 +204,7 @@ const Home = () => {
 
                 <div className="p-5 flex items-center justify-center">
                   <h2 className="text-xl font-bold flex text-center">
-                    <FaArrowRightLong  className="pt-1 "/>
+                    <FaArrowRightLong className="pt-1" />
                     <span> View All Blogs</span>
                   </h2>
                 </div>

@@ -15,8 +15,11 @@ const Viewblog = () => {
 
   useEffect(() => {
     fetchBlogs();
-    fetchCategories();
   }, [category]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const fetchBlogs = async () => {
     try {
@@ -24,6 +27,7 @@ const Viewblog = () => {
       const url = category
         ? `http://localhost:5001/blogs/find?category=${category}`
         : "http://localhost:5001/blogs/find";
+
       const res = await axios.get(url);
       setBlogs(res.data);
     } catch (error) {
@@ -33,9 +37,13 @@ const Viewblog = () => {
     }
   };
 
+  // ✅ UPDATED CATEGORY FETCH URL
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/blogs/categories");
+      const res = await axios.get(
+        "http://localhost:5001/categories/all"
+      );
+
       setCategories(res.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -44,6 +52,7 @@ const Viewblog = () => {
 
   const handleLike = async (e, blogId) => {
     e.preventDefault();
+
     if (!user) {
       alert("Please login to like this blog");
       return;
@@ -51,13 +60,15 @@ const Viewblog = () => {
 
     try {
       const token = localStorage.getItem("token");
+
       await axios.put(
         `http://localhost:5001/blogs/${blogId}/like`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
+
       fetchBlogs();
     } catch (error) {
       console.error("Error liking blog:", error);
@@ -65,12 +76,19 @@ const Viewblog = () => {
   };
 
   const handleDelete = async (blogId) => {
-    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+    if (!window.confirm("Are you sure you want to delete this blog?"))
+      return;
+
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5001/blogs/delete/${blogId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+
+      await axios.delete(
+        `http://localhost:5001/blogs/delete/${blogId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       fetchBlogs();
     } catch (error) {
       console.error("Error deleting blog:", error);
@@ -99,7 +117,7 @@ const Viewblog = () => {
         </div>
       )}
 
-      {/* Category Filters */}
+      {/* ✅ Category Filters */}
       <div className="flex flex-wrap justify-center gap-4 mb-8 px-4">
         <button
           className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
@@ -111,17 +129,18 @@ const Viewblog = () => {
         >
           All Categories
         </button>
-        {categories.map((cat, index) => (
+
+        {categories.map((cat) => (
           <button
-            key={index}
+            key={cat._id}
             className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
-              category === cat
+              category === cat.name
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 hover:bg-blue-100"
             }`}
-            onClick={() => setCategory(cat)}
+            onClick={() => setCategory(cat.name)}
           >
-            {cat}
+            {cat.name}
           </button>
         ))}
       </div>
@@ -136,7 +155,6 @@ const Viewblog = () => {
               key={blog._id}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300"
             >
-              {/* Blog link */}
               <NavLink to={`/blogs/${blog._id}`}>
                 <img
                   src={`http://localhost:5001/uploads/${blog.image}`}
@@ -147,13 +165,19 @@ const Viewblog = () => {
                   <span className="text-sm text-green-600 font-semibold">
                     {blog.category}
                   </span>
-                  <h2 className="text-lg font-bold mt-2">{blog.title}</h2>
+
+                  <h2 className="text-lg font-bold mt-2">
+                    {blog.title}
+                  </h2>
+
                   <p className="text-sm text-gray-600 mt-1">
                     {blog.district}, {blog.state}
                   </p>
+
                   <p className="text-sm text-gray-500 mt-2 line-clamp-3">
                     {blog.description}
                   </p>
+
                   <p className="text-xs text-gray-400 mt-3">
                     By {blog.author?.name || "Unknown"}
                   </p>
@@ -166,7 +190,11 @@ const Viewblog = () => {
                   onClick={(e) => handleLike(e, blog._id)}
                   className="flex items-center gap-2 text-blue-500 hover:scale-110 transition"
                 >
-                  {isLiked ? <AiFillLike size={24} /> : <SlLike size={22} />}
+                  {isLiked ? (
+                    <AiFillLike size={24} />
+                  ) : (
+                    <SlLike size={22} />
+                  )}
                   <span>{blog.likes?.length || 0}</span>
                 </button>
 

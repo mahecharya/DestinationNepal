@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 import connectDb from "./config/db.js";
 import loginRoute from "./route/loginRoute.js"
+import categoryRoute from "./route/categoryRoute.js"
 import blogRoutes from "./route/blogRoute.js"
 import express from "express"
 import cors from "cors"
@@ -31,6 +32,8 @@ app.use("/api", loginRoute);
 app.use("/blogs", blogRoutes);
 
 app.use("/uploads", express.static("upload"));
+
+app.use("/categories", categoryRoute);
 
 
 
