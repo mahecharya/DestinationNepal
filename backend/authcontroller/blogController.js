@@ -2,6 +2,7 @@
 import Blog from "../model/blogModel.js";
 import path from "path";
 import fs from "fs";
+import { title } from "process";
 
 export const createBlog = async (req, res) => {
   try {
@@ -51,15 +52,31 @@ export const getBlogCount = async (req, res) => {
 
 export const findBlog = async (req, res) => {
   try {
-      const {category}=req.query;
-      let filter={};
-      if(category){
-        filter.category=category;
-      }
+    const { category, search ="" } = req.query;
 
-    const blogs = await Blog.find(filter)
-      .populate("author", "name email");
-    res.status(200).json(blogs); // ✅ return array directly
+    // Build filter object
+    let filter = {};
+    if (category) {
+      filter.category = category;
+    }
+    console.log(filter)
+
+    // if (search) {
+    //   filter.title = { $regex: search, $options: "i" };
+    //   filter.category = { $regex: search, $options: "i" };
+      
+    // }
+
+     search = req.query.search || ""
+    console.log(search)
+    const query = search ? {
+      title:{$regex:search, $options:"i"}
+    }:{}
+    console.log(query)
+
+    const blogs = await Blog.find(filter).populate("author", "name email");
+
+    res.status(200).json(blogs);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -75,8 +92,8 @@ export const findBlogById = async (req, res) => {
 };
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Blog.distinct("category"); // MongoDB distinct
-    res.status(200).json(categories); // returns array: ["Travel", "Food", ...]
+    const categories = await Blog.distinct("category"); 
+    res.status(200).json(categories); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -85,7 +102,7 @@ export const getCategories = async (req, res) => {
 export const toggleLike = async (req, res) => {
   try {
     const blogId = req.params.id;
-    const userId = req.user.id; // from auth middleware
+    const userId = req.user.id; 
 
     const blog = await Blog.findById(blogId);
     

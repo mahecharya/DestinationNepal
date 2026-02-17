@@ -10,39 +10,39 @@ const Viewblog = () => {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [search, setSearch] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     fetchBlogs();
-  }, [category]);
+  }, [category, search]);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = async (e) => {
     try {
       setLoading(true);
-      const url = category
-        ? `http://localhost:5001/blogs/find?category=${category}`
-        : "http://localhost:5001/blogs/find";
-
-      const res = await axios.get(url);
+      const res = await axios.get("http://localhost:5001/blogs/find", {
+        params: {
+          category: category || undefined,
+          search: search || undefined,
+        },
+      });
+      console.log(res);
       setBlogs(res.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching blogs:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  // ✅ UPDATED CATEGORY FETCH URL
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/categories/all"
-      );
+      const res = await axios.get("http://localhost:5001/categories/all");
 
       setCategories(res.data);
     } catch (error) {
@@ -66,7 +66,7 @@ const Viewblog = () => {
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       fetchBlogs();
@@ -76,18 +76,14 @@ const Viewblog = () => {
   };
 
   const handleDelete = async (blogId) => {
-    if (!window.confirm("Are you sure you want to delete this blog?"))
-      return;
+    if (!window.confirm("Are you sure you want to delete this blog?")) return;
 
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(
-        `http://localhost:5001/blogs/delete/${blogId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`http://localhost:5001/blogs/delete/${blogId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       fetchBlogs();
     } catch (error) {
@@ -104,8 +100,19 @@ const Viewblog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 pb-1">
       {/* Add Blog Button */}
+      <div className="text-white p-2">
+        <input
+          type="text"
+          className="ml-80 rounded-xl bg-slate-600 size-2xl p-2 w-100"
+          placeholder="Search Blogs"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+        />
+      </div>
+
       {user?.role === "admin" && (
         <div className="flex justify-center mb-8">
           <NavLink
@@ -166,9 +173,7 @@ const Viewblog = () => {
                     {blog.category}
                   </span>
 
-                  <h2 className="text-lg font-bold mt-2">
-                    {blog.title}
-                  </h2>
+                  <h2 className="text-lg font-bold mt-2">{blog.title}</h2>
 
                   <p className="text-sm text-gray-600 mt-1">
                     {blog.district}, {blog.state}
@@ -190,11 +195,7 @@ const Viewblog = () => {
                   onClick={(e) => handleLike(e, blog._id)}
                   className="flex items-center gap-2 text-blue-500 hover:scale-110 transition"
                 >
-                  {isLiked ? (
-                    <AiFillLike size={24} />
-                  ) : (
-                    <SlLike size={22} />
-                  )}
+                  {isLiked ? <AiFillLike size={24} /> : <SlLike size={22} />}
                   <span>{blog.likes?.length || 0}</span>
                 </button>
 
