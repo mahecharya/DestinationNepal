@@ -14,9 +14,6 @@ const Viewblog = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    fetchBlogs();
-  }, [category, search]);
 
   useEffect(() => {
     fetchCategories();
@@ -40,6 +37,14 @@ const Viewblog = () => {
       setLoading(false);
     }
   };
+    useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchBlogs();
+    }, 1500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [category, search]);
+
   const fetchCategories = async () => {
     try {
       const res = await axios.get("http://localhost:5001/categories/all");
@@ -102,16 +107,18 @@ const Viewblog = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-8 pb-1">
       {/* Add Blog Button */}
-      <div className="text-white p-2">
-        <input
-          type="text"
-          className="ml-80 rounded-xl bg-slate-600 size-2xl p-2 w-100"
-          placeholder="Search Blogs"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        />
-      </div>
+      <form>
+        <div className="text-white p-2">
+          <input
+            type="text"
+            className="ml-80 rounded-xl bg-slate-600 size-2xl p-2 w-100"
+            placeholder="Search Blogs"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+          />
+        </div>
+      </form>
 
       {user?.role === "admin" && (
         <div className="flex justify-center mb-8">

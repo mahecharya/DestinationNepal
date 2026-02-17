@@ -2,7 +2,6 @@
 import Blog from "../model/blogModel.js";
 import path from "path";
 import fs from "fs";
-import { title } from "process";
 
 export const createBlog = async (req, res) => {
   try {
@@ -52,27 +51,21 @@ export const getBlogCount = async (req, res) => {
 
 export const findBlog = async (req, res) => {
   try {
-    const { category, search ="" } = req.query;
+    const { category, search = "" } = req.query;
 
     // Build filter object
     let filter = {};
     if (category) {
       filter.category = category;
     }
-    console.log(filter)
 
-    // if (search) {
-    //   filter.title = { $regex: search, $options: "i" };
-    //   filter.category = { $regex: search, $options: "i" };
-      
-    // }
-
-     search = req.query.search || ""
-    console.log(search)
-    const query = search ? {
-      title:{$regex:search, $options:"i"}
-    }:{}
-    console.log(query)
+     if (search) {
+      // Add $or to search in title OR category (case-insensitive)
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ];
+    }
 
     const blogs = await Blog.find(filter).populate("author", "name email");
 
