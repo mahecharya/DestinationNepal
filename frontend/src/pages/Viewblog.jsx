@@ -11,9 +11,10 @@ const Viewblog = () => {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const user = JSON.parse(localStorage.getItem("user"));
-
 
   useEffect(() => {
     fetchCategories();
@@ -26,10 +27,14 @@ const Viewblog = () => {
         params: {
           category: category || undefined,
           search: search || undefined,
+          page,
+          limit: 5,
         },
       });
       console.log(res);
-      setBlogs(res.data);
+      setBlogs(res.data.blogs);
+      setTotalPages(res.data.totalPages);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -37,13 +42,13 @@ const Viewblog = () => {
       setLoading(false);
     }
   };
-    useEffect(() => {
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
       fetchBlogs();
-    }, 1500);
+    }, 1000);
 
     return () => clearTimeout(delayDebounce);
-  }, [category, search]);
+  }, [category, search,page]);
 
   const fetchCategories = async () => {
     try {
@@ -227,6 +232,23 @@ const Viewblog = () => {
             </div>
           );
         })}
+        <div>
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            Prev
+          </button>
+
+          <span>
+            {" "}
+            Page {page} of {totalPages}{" "}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

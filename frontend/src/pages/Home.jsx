@@ -32,7 +32,8 @@ const Home = () => {
         : "http://localhost:5001/blogs/find";
 
       const res = await axios.get(url);
-      setBlogs(res.data);
+      console.log(res)
+      setBlogs(res.data.blogs);
     } catch (error) {
       console.log(error);
     } finally {
@@ -140,7 +141,7 @@ const Home = () => {
         </h2>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
-          {blogs.slice(0, 5).map((blog) => {
+          {blogs.map((blog) => {
             const isLiked = blog.likes?.includes(user?._id);
 
             return (
