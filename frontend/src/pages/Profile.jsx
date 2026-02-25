@@ -16,7 +16,7 @@ const Profile = () => {
     formData.append("profilePhoto", file);
 
     const res = await axios.put(
-      "https://destinationnepal.onrender.com/api/profp",
+      "https://destinationnepall.onrender.com/api/profp",
       formData,
       {
         headers: {
@@ -40,7 +40,7 @@ const Profile = () => {
         <img
           src={
             user?.profilePhoto
-              ? `https://destinationnepal.onrender.com/uploads/profile/${user.profilePhoto}`
+              ? `https://destinationnepall.onrender.com/uploads/profile/${user.profilePhoto}`
               : "https://via.placeholder.com/120"
           }
           alt="profile"

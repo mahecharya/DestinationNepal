@@ -9,7 +9,7 @@ const ManageCategory = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("https://destinationnepal.onrender.com/categories/all");
+      const res = await axios.get("https://destinationnepall.onrender.com/categories/all");
       setCategories(res.data);
     } catch (error) {
       console.log(error);
@@ -29,7 +29,7 @@ const ManageCategory = () => {
 
     try {
       await axios.post(
-        "https://destinationnepal.onrender.com/categories/create",
+        "https://destinationnepall.onrender.com/categories/create",
         { name: categoryName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -45,7 +45,7 @@ const ManageCategory = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://destinationnepal.onrender.com/categories/delete/${id}`,
+        `https://destinationnepall.onrender.com/categories/delete/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

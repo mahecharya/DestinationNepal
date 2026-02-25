@@ -34,7 +34,7 @@ const Viewblog = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://destinationnepal.onrender.com/blogs/find",
+        "https://destinationnepall.onrender.com/blogs/find",
         {
           params: {
             category: category || undefined,
@@ -58,7 +58,7 @@ const Viewblog = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(
-        "https://destinationnepal.onrender.com/categories/all"
+        "https://destinationnepall.onrender.com/categories/all"
       );
       setCategories(res.data);
     } catch (error) {
@@ -77,7 +77,7 @@ const Viewblog = () => {
 
     try {
       await axios.put(
-        `https://destinationnepal.onrender.com/blogs/${blogId}/like`,
+        `https://destinationnepall.onrender.com/blogs/${blogId}/like`,
         {},
         {
           headers: {
@@ -101,7 +101,7 @@ const Viewblog = () => {
 
     try {
       await axios.put(
-        `https://destinationnepal.onrender.com/blogs/${blogId}/rate`,
+        `https://destinationnepall.onrender.com/blogs/${blogId}/rate`,
         { value },
         {
           headers: {
@@ -122,7 +122,7 @@ const Viewblog = () => {
 
     try {
       await axios.delete(
-        `https://destinationnepal.onrender.com/blogs/delete/${blogId}`,
+        `https://destinationnepall.onrender.com/blogs/delete/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -210,7 +210,7 @@ const Viewblog = () => {
             >
               <NavLink to={`/blogs/${blog._id}`}>
                 <img
-                  src={`https://destinationnepal.onrender.com/uploads/${blog.image}`}
+                  src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
                   alt={blog.title}
                   className="w-full h-52 object-cover"
                 />

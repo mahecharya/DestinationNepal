@@ -91,7 +91,7 @@ const Blog = () => {
 
       if (isEditmode) {
         response = await axios.put(
-          `https://destinationnepal.onrender.com/blogs/update/${id}`,
+          `https://destinationnepall.onrender.com/blogs/update/${id}`,
           formData,
           {
             headers: {
@@ -102,7 +102,7 @@ const Blog = () => {
         alert("Blog updated successfully!");
       } else {
         response = await axios.post(
-          "https://destinationnepal.onrender.com/blogs/create",
+          "https://destinationnepall.onrender.com/blogs/create",
           formData,
           {
             headers: {

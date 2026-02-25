@@ -10,7 +10,7 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`https://destinationnepal.onrender.com/blogs/find/${id}`);
+        const res = await axios.get(`https://destinationnepall.onrender.com/blogs/find/${id}`);
         setBlog(res.data);
       } catch (error) {
         console.error(error);
@@ -31,7 +31,7 @@ const BlogDetail = () => {
 
       {blog.image && (
         <img
-          src={`https://destinationnepal.onrender.com/uploads/${blog.image}`}
+          src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
           alt={blog.title}
           className="w-full max-h-60xl object-cover rounded-lg mb-4"
         />

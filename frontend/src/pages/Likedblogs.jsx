@@ -15,7 +15,7 @@ const Likedblogs = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "https://destinationnepal.onrender.com/blogs/liked",
+        "https://destinationnepall.onrender.com/blogs/liked",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const Likedblogs = () => {
               <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
 
                 <img
-                  src={`https://destinationnepal.onrender.com/uploads/${blog.image}`}
+                  src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
                   alt={blog.title}
                   className="w-full h-52 object-cover"
                 />

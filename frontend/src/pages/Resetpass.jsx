@@ -20,7 +20,7 @@ const ResetPasswordDesign = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5001/api/otp",
+        "https://destinationnepall.onrender.com/api/otp",
         { email }
       );
 
@@ -41,7 +41,7 @@ const ResetPasswordDesign = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5001/api/reset-password",
+        "https://destinationnepall.onrender.com/api/reset-password",
         { email, otp, newPassword }
       );
 

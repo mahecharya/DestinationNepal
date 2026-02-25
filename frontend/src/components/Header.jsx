@@ -85,7 +85,7 @@ const Header = () => {
                   <img
                     src={
                       user?.profilePhoto
-                        ? `https://destinationnepal.onrender.com/uploads/profile/${user.profilePhoto}`
+                        ? `https://destinationnepall.onrender.com/uploads/profile/${user.profilePhoto}`
                         : "https://via.placeholder.com/40"
                     }
                     alt="profile"

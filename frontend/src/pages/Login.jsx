@@ -27,7 +27,7 @@ const Login = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const res = await axios.post(
-          "https://destinationnepal.onrender.com/api/login",
+          "https://destinationnepall.onrender.com/api/login",
           values,
           { withCredentials: true },
         );

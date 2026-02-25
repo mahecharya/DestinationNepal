@@ -28,8 +28,8 @@ const Home = () => {
     try {
       setLoading(true);
       const url = category
-        ? `https://destinationnepal.onrender.com/find?category=${category}`
-        : "https://destinationnepal.onrender.com/blogs/find";
+        ? `https://destinationnepall.onrender.com/find?category=${category}`
+        : "https://destinationnepall.onrender.com/blogs/find";
 
       const res = await axios.get(url);
       console.log(res)
@@ -45,7 +45,7 @@ const Home = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(
-        "https://destinationnepal.onrender.com/categories/all"
+        "https://destinationnepall.onrender.com/categories/all"
       );
 
       // If backend returns array of objects like [{_id, name}]
@@ -67,7 +67,7 @@ const Home = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `https://destinationnepal.onrender.com/blogs/${blogId}/like`,
+        `https://destinationnepall.onrender.com/blogs/${blogId}/like`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -148,7 +148,7 @@ const Home = () => {
               <NavLink key={blog._id} to={`/blogs/${blog._id}`}>
                 <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
                   <img
-                    src={`https://destinationnepal.onrender.com/uploads/${blog.image}`}
+                    src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
                     alt={blog.title}
                     className="w-full h-56 object-cover"
                   />

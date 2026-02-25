@@ -33,7 +33,7 @@ const Register = () => {
     onSubmit: async(values, { resetForm }) => {
 
     try {
-        const res=await axios.post(`https://destinationnepal.onrender.com/api/create`,values)
+        const res=await axios.post(`https://destinationnepall.onrender.com/api/create`,values)
          console.log("Form Values:", values);
       alert("Form submitted successfully!\n" );
       resetForm();

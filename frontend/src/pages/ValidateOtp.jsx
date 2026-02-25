@@ -16,7 +16,7 @@ const handlesendOTP = async () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5001/api/otp",
+        "https://destinationnepall.onrender.com/api/otp",
         { email }
       );
 
@@ -36,7 +36,7 @@ const handlesendOTP = async () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5001/api/verify-otp",
+        "https://destinationnepall.onrender.com/api/verify-otp",
         { email, otp }
       );
 

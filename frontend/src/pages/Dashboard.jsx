@@ -11,7 +11,7 @@ const [ucount,setUcount]=useState(0);
  useEffect(() => {
     const fetchBlogCount = async () => {
       try {
-        const response = await axios.get("https://destinationnepal.onrender.com/blogs/bcount", {
+        const response = await axios.get("https://destinationnepall.onrender.com/blogs/bcount", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -30,7 +30,7 @@ const [ucount,setUcount]=useState(0);
  useEffect(() => {
   const fetchUsercount = async () => {
     try {
-      const res = await axios.get("https://destinationnepal.onrender.com/api/ucount", {
+      const res = await axios.get("https://destinationnepall.onrender.com/api/ucount", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

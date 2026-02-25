@@ -6,7 +6,7 @@ const ManageUser = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://destinationnepal.onrender.com/api/find");
+      const res = await axios.get("https://destinationnepall.onrender.com/api/find");
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
