@@ -1,14 +1,18 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../redux/feature/Userauthenticate";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Login = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,30 +30,25 @@ const Login = () => {
 
     onSubmit: async (values, { resetForm }) => {
       try {
-        const res = await axios.post(
-          "https://destinationnepall.onrender.com/api/login",
-          values,
-          { withCredentials: true },
-        );
-        console.log(res.data.message);
+        const res = await axios.post(`${BASE_URL}/api/login`, values, {
+          withCredentials: true,
+        });
+
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         dispatch(setToken(res.data.user));
-        console.log(res.data.user.role);
-        if (res.data.user.role === "admin") {
-          
-          nav("/");
-        } else {
-          nav("/");
-        }
+
+        // Navigate based on role
+        nav(res.data.user.role === "admin" ? "/" : "/");
       } catch (error) {
-        console.log(error);
+        console.error("Login error:", error.response?.data || error.message);
+        alert(error.response?.data?.message || "Login failed");
       }
     },
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-950 to-red-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 to-red-900">
       <div className="bg-teal-100 p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Login
@@ -88,9 +87,16 @@ const Login = () => {
             )}
           </div>
 
-          <span>Forget your <button 
-          onClick={()=> nav("/respassword")}
-          className=" text-blue-400">password</button></span>
+          <span>
+            Forget your{" "}
+            <button
+              type="button"
+              onClick={() => nav("/respassword")}
+              className="text-blue-400 underline"
+            >
+              password
+            </button>
+          </span>
 
           {/* Submit */}
           <button

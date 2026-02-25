@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/feature/Userauthenticate";
 import { LuLogOut } from "react-icons/lu";
 
+// Base URL for API
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,21 +35,14 @@ const Header = () => {
 
       {/* Main */}
       <div className="flex-1 flex flex-col">
-
         {/* HEADER */}
         <div className="bg-slate-300 flex items-center justify-between px-10 h-20 shadow-md">
-
           {/* Left Logo */}
-          <div
-            onClick={() => navigate("/")}
-            className="cursor-pointer flex"
-          >
+          <div onClick={() => navigate("/")} className="cursor-pointer flex">
             <span className="text-2xl font-semibold bg-gradient-to-r from-indigo-600 via-blue-500 to-emerald-500 bg-clip-text text-transparent">
               Explore
             </span>
-            <span className="text-2xl font-bold text-green-700 ml-1">
-              NEPAL
-            </span>
+            <span className="text-2xl font-bold text-green-700 ml-1">NEPAL</span>
           </div>
 
           {/* CENTER MENU */}
@@ -85,7 +80,7 @@ const Header = () => {
                   <img
                     src={
                       user?.profilePhoto
-                        ? `https://destinationnepall.onrender.com/uploads/profile/${user.profilePhoto}`
+                        ? `${BASE_URL}/uploads/profile/${user.profilePhoto}`
                         : "https://via.placeholder.com/40"
                     }
                     alt="profile"
@@ -95,11 +90,8 @@ const Header = () => {
                 </div>
 
                 {/* Logout */}
-                <button
-                  onClick={handleLogout}
-                >
+                <button onClick={handleLogout}>
                   <LuLogOut />
-
                 </button>
               </>
             ) : (

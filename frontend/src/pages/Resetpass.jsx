@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://destinationnepall.onrender.com";
+
 const ResetPasswordDesign = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -9,9 +12,9 @@ const ResetPasswordDesign = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
-
   const nav = useNavigate();
 
+  // ✅ Step 1: Send OTP
   const handlesendOTP = async () => {
     try {
       if (!email) {
@@ -19,20 +22,17 @@ const ResetPasswordDesign = () => {
         return;
       }
 
-      const response = await axios.post(
-        "https://destinationnepall.onrender.com/api/otp",
-        { email }
-      );
-
+      const response = await axios.post(`${BASE_URL}/api/otp`, { email });
       console.log(response.data);
       alert("OTP sent successfully!");
       setStep(2);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert(error.response?.data?.message || "Failed to send OTP");
     }
   };
 
+  // ✅ Step 2: Reset Password
   const handleResetPassword = async () => {
     try {
       if (!otp || !newPassword) {
@@ -40,21 +40,20 @@ const ResetPasswordDesign = () => {
         return;
       }
 
-      const response = await axios.post(
-        "https://destinationnepall.onrender.com/api/reset-password",
-        { email, otp, newPassword }
-      );
+      const response = await axios.post(`${BASE_URL}/api/reset-password`, {
+        email,
+        otp,
+        newPassword,
+      });
 
       console.log(response.data);
       alert("Password reset successful!");
-      {(!user)&&
-        nav("/login");
-      }
-      {(user)&&
-      nav("/profile");
-      }
+
+      // Navigate based on login status
+      if (!user) nav("/login");
+      else nav("/profile");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert(error.response?.data?.message || "Failed to reset password");
     }
   };
@@ -96,9 +95,7 @@ const ResetPasswordDesign = () => {
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
 
-            <label className="block text-gray-700 font-medium">
-              New Password
-            </label>
+            <label className="block text-gray-700 font-medium">New Password</label>
             <input
               type="password"
               placeholder="Enter new password"
@@ -115,7 +112,7 @@ const ResetPasswordDesign = () => {
             </button>
 
             <p
-              onClick={() => setStep(1)}   
+              onClick={() => setStep(1)}
               className="text-sm text-blue-500 text-center mt-2 cursor-pointer hover:underline"
             >
               Back to Email

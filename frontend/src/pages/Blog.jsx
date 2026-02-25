@@ -4,6 +4,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Blog = () => {
   const { id } = useParams();
   const isEditmode = Boolean(id);
@@ -14,9 +17,7 @@ const Blog = () => {
   // 🔹 Fetch single blog (for edit mode)
   const fetchBlog = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5001/blogs/find/${id}`
-      );
+      const res = await axios.get(`${BASE_URL}/blogs/find/${id}`);
       setUpblog(res.data);
     } catch (error) {
       console.log(error);
@@ -26,9 +27,7 @@ const Blog = () => {
   // 🔹 Fetch categories from backend
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/categories/all"
-      );
+      const res = await axios.get(`${BASE_URL}/categories/all`);
       setCategories(res.data);
     } catch (error) {
       console.log("Category fetch error:", error);
@@ -37,10 +36,7 @@ const Blog = () => {
 
   useEffect(() => {
     fetchCategories();
-
-    if (isEditmode) {
-      fetchBlog();
-    }
+    if (isEditmode) fetchBlog();
   }, [isEditmode]);
 
   // 🔹 Initial Values
@@ -69,53 +65,35 @@ const Blog = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       const token = localStorage.getItem("token");
-
       if (!token) {
         alert("Please login first");
         return;
       }
 
       const formData = new FormData();
-
       formData.append("title", values.title);
       formData.append("district", values.district);
       formData.append("state", values.state);
       formData.append("description", values.description);
       formData.append("category", values.category);
-
-      if (values.image) {
-        formData.append("image", values.image);
-      }
+      if (values.image) formData.append("image", values.image);
 
       let response;
 
       if (isEditmode) {
-        response = await axios.put(
-          `https://destinationnepall.onrender.com/blogs/update/${id}`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await axios.put(`${BASE_URL}/blogs/update/${id}`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         alert("Blog updated successfully!");
       } else {
-        response = await axios.post(
-          "https://destinationnepall.onrender.com/blogs/create",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await axios.post(`${BASE_URL}/blogs/create`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         alert("Blog created successfully!");
         resetForm();
       }
 
       console.log(response.data);
-
     } catch (error) {
       console.error("Submit error:", error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong");
@@ -138,74 +116,32 @@ const Blog = () => {
           {({ setFieldValue }) => (
             <Form className="space-y-4">
 
-              {/* Title */}
-              <Field
-                type="text"
-                name="title"
-                placeholder="Title"
-                className="w-full border p-2 rounded"
-              />
+              <Field type="text" name="title" placeholder="Title" className="w-full border p-2 rounded" />
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
 
-              {/* District */}
-              <Field
-                type="text"
-                name="district"
-                placeholder="District"
-                className="w-full border p-2 rounded"
-              />
+              <Field type="text" name="district" placeholder="District" className="w-full border p-2 rounded" />
               <ErrorMessage name="district" component="div" className="text-red-500 text-sm" />
 
-              {/* State */}
-              <Field
-                type="text"
-                name="state"
-                placeholder="State"
-                className="w-full border p-2 rounded"
-              />
+              <Field type="text" name="state" placeholder="State" className="w-full border p-2 rounded" />
               <ErrorMessage name="state" component="div" className="text-red-500 text-sm" />
 
-              {/* Description */}
-              <Field
-                as="textarea"
-                name="description"
-                placeholder="Description"
-                rows="3"
-                className="w-full border p-2 rounded"
-              />
+              <Field as="textarea" name="description" placeholder="Description" rows="3" className="w-full border p-2 rounded" />
               <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
 
-              {/* 🔥 Dynamic Category Dropdown */}
-              <Field
-                as="select"
-                name="category"
-                className="w-full border p-2 rounded"
-              >
+              {/* Category */}
+              <Field as="select" name="category" className="w-full border p-2 rounded">
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
-                  <option key={cat._id} value={cat.name}>
-                    {cat.name}
-                  </option>
+                  <option key={cat._id} value={cat.name}>{cat.name}</option>
                 ))}
               </Field>
               <ErrorMessage name="category" component="div" className="text-red-500 text-sm" />
 
               {/* Image Upload */}
-              <input
-                type="file"
-                name="image"
-                onChange={(event) =>
-                  setFieldValue("image", event.currentTarget.files[0])
-                }
-                className="w-full"
-              />
+              <input type="file" name="image" onChange={(e) => setFieldValue("image", e.currentTarget.files[0])} className="w-full" />
               <ErrorMessage name="image" component="div" className="text-red-500 text-sm" />
 
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
-              >
+              <button type="submit" className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition">
                 {isEditmode ? "Update Data" : "Submit Data"}
               </button>
 

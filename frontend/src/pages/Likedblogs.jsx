@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Likedblogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,18 +17,15 @@ const Likedblogs = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        "https://destinationnepall.onrender.com/blogs/liked",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get(`${BASE_URL}/blogs/liked`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setBlogs(res.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching liked blogs:", error);
     } finally {
       setLoading(false);
     }
@@ -41,9 +41,7 @@ const Likedblogs = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Liked Blogs
-      </h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Liked Blogs</h1>
 
       {blogs.length === 0 ? (
         <p className="text-center text-gray-500">
@@ -54,9 +52,8 @@ const Likedblogs = () => {
           {blogs.map((blog) => (
             <NavLink key={blog._id} to={`/blogs/${blog._id}`}>
               <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-
                 <img
-                  src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
+                  src={`${BASE_URL}/uploads/${blog.image}`}
                   alt={blog.title}
                   className="w-full h-52 object-cover"
                 />
@@ -66,9 +63,7 @@ const Likedblogs = () => {
                     {blog.category}
                   </span>
 
-                  <h2 className="text-lg font-bold mt-2">
-                    {blog.title}
-                  </h2>
+                  <h2 className="text-lg font-bold mt-2">{blog.title}</h2>
 
                   <p className="text-sm text-gray-600 mt-1">
                     {blog.district}, {blog.state}
@@ -79,10 +74,9 @@ const Likedblogs = () => {
                   </p>
 
                   <div className="mt-4 text-blue-500 font-semibold">
-                     {blog.likes.length} Likes
+                    {blog.likes.length} Likes
                   </div>
                 </div>
-
               </div>
             </NavLink>
           ))}

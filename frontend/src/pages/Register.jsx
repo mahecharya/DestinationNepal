@@ -1,11 +1,15 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios"
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Register = () => {
-    const nav =useNavigate();
+  const nav = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -30,26 +34,26 @@ const Register = () => {
       gender: Yup.string().required("Please select gender"),
     }),
 
-    onSubmit: async(values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await axios.post(`${BASE_URL}/api/create`, values);
+        console.log("Form Values:", values);
+        alert("Registration successful!");
+        resetForm();
 
-    try {
-        const res=await axios.post(`https://destinationnepall.onrender.com/api/create`,values)
-         console.log("Form Values:", values);
-      alert("Form submitted successfully!\n" );
-      resetForm();
-    } catch (error) {
-        console.log(error)
-    }
- 
+        // Navigate to OTP validation or login page
+        nav("/validateotp");
+      } catch (error) {
+        console.error("Registration error:", error.response?.data || error.message);
+        alert(error.response?.data?.message || "Registration failed");
+      }
     },
   });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-950 to-blue-900">
-      <div className="bg-gre p-8 rounded-2xl shadow-2xl bg-teal-100 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Register
-        </h2>
+      <div className="bg-teal-100 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-6">Register</h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           {/* Name */}
@@ -142,21 +146,20 @@ const Register = () => {
           {/* Submit */}
           <button
             type="submit"
-            onClick={()=>(nav("/validateotp"))}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition"
           >
             REGISTER
           </button>
-           <p className="text-center text-sm text-gray-600 mt-4">
-          Already have an account?{" "}
-          <span 
-          onClick={()=>(
-            nav("/login")
-          )}
-          className="text-indigo-600 font-medium cursor-pointer hover:underline">
-            Login
-          </span>
-        </p>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Already have an account?{" "}
+            <span
+              onClick={() => nav("/login")}
+              className="text-indigo-600 font-medium cursor-pointer hover:underline"
+            >
+              Login
+            </span>
+          </p>
         </form>
       </div>
     </div>

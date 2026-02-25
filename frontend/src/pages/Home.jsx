@@ -7,6 +7,9 @@ import { AiFillLike } from "react-icons/ai";
 import img from "../assets/img.jpg";
 import { FaArrowRightLong } from "react-icons/fa6";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,16 +26,15 @@ const Home = () => {
     fetchCategories();
   }, []);
 
-  // ✅ Fetch Blogs
+  // 🔹 Fetch Blogs
   const fetchBlogs = async () => {
     try {
       setLoading(true);
       const url = category
-        ? `https://destinationnepall.onrender.com/find?category=${category}`
-        : "https://destinationnepall.onrender.com/blogs/find";
+        ? `${BASE_URL}/find?category=${category}`
+        : `${BASE_URL}/blogs/find`;
 
       const res = await axios.get(url);
-      console.log(res)
       setBlogs(res.data.blogs);
     } catch (error) {
       console.log(error);
@@ -41,20 +43,17 @@ const Home = () => {
     }
   };
 
-  // ✅ Fetch Categories from NEW URL
+  // 🔹 Fetch Categories
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(
-        "https://destinationnepall.onrender.com/categories/all"
-      );
-
-      // If backend returns array of objects like [{_id, name}]
+      const res = await axios.get(`${BASE_URL}/categories/all`);
       setCategories(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // 🔹 Handle Likes
   const handleLike = async (e, blogId) => {
     e.preventDefault();
 
@@ -67,11 +66,9 @@ const Home = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `https://destinationnepall.onrender.com/blogs/${blogId}/like`,
+        `${BASE_URL}/blogs/${blogId}/like`,
         {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       fetchBlogs();
@@ -107,7 +104,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* ✅ Category Buttons */}
+      {/* Category Buttons */}
       <div className="flex justify-center flex-wrap gap-4 mt-10 mb-8 px-4">
         <button
           className={`px-6 py-2 rounded-full font-semibold shadow-md transition ${
@@ -135,6 +132,7 @@ const Home = () => {
         ))}
       </div>
 
+      {/* Blogs */}
       <div className="p-8 max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-10">
           Featured Blogs
@@ -148,7 +146,7 @@ const Home = () => {
               <NavLink key={blog._id} to={`/blogs/${blog._id}`}>
                 <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
                   <img
-                    src={`https://destinationnepall.onrender.com/uploads/${blog.image}`}
+                    src={`${BASE_URL}/uploads/${blog.image}`}
                     alt={blog.title}
                     className="w-full h-56 object-cover"
                   />
@@ -158,9 +156,7 @@ const Home = () => {
                       {blog.category}
                     </span>
 
-                    <h2 className="text-xl font-bold mt-2">
-                      {blog.title}
-                    </h2>
+                    <h2 className="text-xl font-bold mt-2">{blog.title}</h2>
 
                     <p className="text-sm text-gray-600 mt-1">
                       {blog.district}, {blog.state}
@@ -179,11 +175,7 @@ const Home = () => {
                         onClick={(e) => handleLike(e, blog._id)}
                         className="flex items-center gap-2 text-blue-500 hover:scale-110 transition"
                       >
-                        {isLiked ? (
-                          <AiFillLike size={24} />
-                        ) : (
-                          <SlLike size={22} />
-                        )}
+                        {isLiked ? <AiFillLike size={24} /> : <SlLike size={22} />}
                         <span>{blog.likes?.length || 0}</span>
                       </button>
                     </div>

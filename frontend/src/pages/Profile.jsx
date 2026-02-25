@@ -2,32 +2,39 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// 🔹 Base URL for backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-  const nav=useNavigate()
+  const nav = useNavigate();
 
   const [file, setFile] = useState(null);
 
   const handlePhotoChange = async (e) => {
     e.preventDefault();
 
+    if (!file) return alert("Please select a file first");
+
     const formData = new FormData();
     formData.append("profilePhoto", file);
 
-    const res = await axios.put(
-      "https://destinationnepall.onrender.com/api/profp",
-      formData,
-      {
+    try {
+      const res = await axios.put(`${BASE_URL}/api/profp`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
-        }
-      }
-    );
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    localStorage.setItem("user", JSON.stringify(res.data));
-    window.location.reload();
+      // Update user in localStorage
+      localStorage.setItem("user", JSON.stringify(res.data));
+      window.location.reload();
+    } catch (error) {
+      console.error("Profile update error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Failed to update profile photo");
+    }
   };
 
   return (
@@ -40,7 +47,7 @@ const Profile = () => {
         <img
           src={
             user?.profilePhoto
-              ? `https://destinationnepall.onrender.com/uploads/profile/${user.profilePhoto}`
+              ? `${BASE_URL}/uploads/profile/${user.profilePhoto}`
               : "https://via.placeholder.com/120"
           }
           alt="profile"
@@ -56,24 +63,19 @@ const Profile = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md"
+            className="w-full bg-blue-600 text-white py-2 rounded-md mb-2"
           >
             Change Photo
           </button>
 
-        
-
-
-        </form>
-
           <button
-            type="submit"
-            onClick={()=>(nav("/respassword"))}
+            type="button"
+            onClick={() => nav("/respassword")}
             className="w-full bg-red-600 text-white py-2 rounded-md"
           >
-           Forget password
+            Forget Password
           </button>
-
+        </form>
       </div>
     </div>
   );
