@@ -117,28 +117,17 @@ export const findUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
-    }
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await Login.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Generate 6 digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Save OTP & expiry (5 minutes)
     user.otp = otp;
     user.otpExpire = Date.now() + 5 * 60 * 1000;
-
     await user.save();
 
     // Send Email
@@ -146,25 +135,15 @@ export const sendOtp = async (req, res) => {
       from: process.env.SMTP_SENDER,
       to: user.email,
       subject: "Your OTP Code",
-      html: `
-        <h2>Destination Nepal OTP Verification</h2>
-        <p>Your OTP is:</p>
-        <h1>${otp}</h1>
-        <p>This OTP will expire in 5 minutes.</p>
-      `,
+      html: `<h2>Destination Nepal OTP Verification</h2><h1>${otp}</h1><p>Expires in 5 minutes.</p>`,
     });
 
-    return res.status(200).json({
-      message: "OTP sent successfully",
-    });
+    return res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "Something went wrong",
-    });
+    console.error("❌ OTP Send Error:", error);
+    return res.status(500).json({ message: error.message || "Something went wrong" });
   }
 };
-
 export const verifyResetOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
