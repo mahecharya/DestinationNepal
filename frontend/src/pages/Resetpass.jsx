@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // 🔹 Base URL for backend
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://destinationnepall.onrender.com";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL ||  "http://localhost:5001";
 
 const ResetPasswordDesign = () => {
   const [step, setStep] = useState(1);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-// 🔹 Base URL for backend
+
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
 
 const Likedblogs = () => {

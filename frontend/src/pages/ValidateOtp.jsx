@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ✅ Base URL for backend
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://destinationnepall.onrender.com";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL ||  "http://localhost:5001";
 
 const OtpPageDesign = () => {
   const [step, setStep] = useState(1); // Step 1: send OTP, Step 2: validate OTP

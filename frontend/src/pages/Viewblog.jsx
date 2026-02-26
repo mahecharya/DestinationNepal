@@ -5,7 +5,7 @@ import { GrAdd } from "react-icons/gr";
 import { SlLike } from "react-icons/sl";
 import { AiFillLike } from "react-icons/ai";
 
-const BASE_URL = "https://destinationnepall.onrender.com";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL ||  "http://localhost:5001";
 
 const Viewblog = () => {
   const [blogs, setBlogs] = useState([]);

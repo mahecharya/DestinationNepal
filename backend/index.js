@@ -19,7 +19,9 @@ app.use(cookieParser());
 const corsOptions = {
 origin: [
       "http://localhost:5173",     // local frontend
-      "https://destinationnepal-5.onrender.com"  // deployed frontend
+      "https://destinationnepal-5.onrender.com" ,
+     " https://destinationnepall.onrender.com",//deployed backend
+       // deployed frontend
     ],  credentials: true,
 };
 app.use(cors(corsOptions));

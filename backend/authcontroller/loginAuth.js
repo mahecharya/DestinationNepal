@@ -5,7 +5,7 @@ import transporter from "../config/Nodemailer.js";
 
 export const createLogin = async (req, res) => {
   try {
-   const { name, age, gender, email, password, role } = req.body;
+    const { name, age, gender, email, password, role } = req.body;
 
     if (!name || !age || !gender || !email || !password) {
       return res.status(400).json({ message: "please fill all details" });
@@ -15,19 +15,19 @@ export const createLogin = async (req, res) => {
       return res.status(409).json({ message: "user already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 8);
-    
-    const login=await Login.create({
-       name,
+
+    const login = await Login.create({
+      name,
       age,
       gender,
       email,
-      password:hashedPassword,
-      role:role==="admin"?"admin":"user",
-    })
+      password: hashedPassword,
+      role: role === "admin" ? "admin" : "user",
+    });
     res.status(201).json({
       message: "Account created successfully",
       loginID: Login._id,
-      role:login.role
+      role: login.role,
     });
   } catch (error) {
     console.log(error);
@@ -47,23 +47,22 @@ export const loginUser = async (req, res) => {
     if (!isMatched) {
       return res.status(400).json({ message: "password wrong" });
     }
-    const token=generateToken(existingUser);
+    const token = generateToken(existingUser);
 
-    console.log(token)
-    res.cookie("token", token,{
-      httpOnly:true,
-      secure:false,
-      sameSite:"lax",
-      maxAge: 7*24*60*60*1000
-      
-    })
+    console.log(token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 5 * 60 * 60 * 1000,
+    });
     res.status(200).json({
       message: "Login successful",
       user: existingUser,
       token,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -80,9 +79,8 @@ export const getUserCount = async (req, res) => {
     const totalusers = await Login.countDocuments();
 
     res.status(200).json({
-      totalusers
+      totalusers,
     });
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -93,21 +91,18 @@ export const updateProfile = async (req, res) => {
 
     const updateData = {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
     };
 
     if (req.file) {
       updateData.profilePhoto = req.file.filename;
     }
 
-    const user = await Login.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true }
-    );
+    const user = await Login.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
 
     res.status(200).json(user);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Profile update failed" });
@@ -117,7 +112,7 @@ export const updateProfile = async (req, res) => {
 export const findUsers = async (req, res) => {
   try {
     const users = await Login.find(); // fetch all users without sorting
-    res.status(200).json(users);     // return array directly
+    res.status(200).json(users); // return array directly
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -162,7 +157,6 @@ export const sendOtp = async (req, res) => {
     return res.status(200).json({
       message: "OTP sent successfully",
     });
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -198,7 +192,6 @@ export const verifyResetOtp = async (req, res) => {
     res.status(200).json({
       message: "OTP verified successfully",
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });
@@ -238,7 +231,6 @@ export const resetPassword = async (req, res) => {
     res.status(200).json({
       message: "Password reset successful",
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
